@@ -14,13 +14,16 @@ function mainJs() {
 		var button = allButtons[i];
 
 		button.addEventListener('click', function() {
+			var number = 0;
 			var value = this.value;
 
 			if (value.indexOf(' Dollars') >= 0) {
-				totalCount += Number(value.replace(' Dollars', ''));
+				number = Number(value.replace(' Dollars', ''));
 			} else if (value.indexOf(' Dollar') >= 0) {
-				totalCount += Number(value.replace(' Dollar', ''));
+				number = Number(value.replace(' Dollar', ''));
 			}
+
+			totalCount += number;
 
 			if (buttonsPressed[value] > 0) {
 				buttonsPressed[value] = buttonsPressed[value] + 1;
@@ -35,6 +38,26 @@ function mainJs() {
 			} else if (totalCount > random) {
 				turnOff();
 				console.log('More!');
+			}
+
+			// Check if buttons need to be disabled
+			var remaining = random - totalCount;
+
+			console.log(remaining);
+
+			for (var i = 0; i < allButtons.length; i++) {
+				var button = allButtons[i];
+				var buttonValue = 0;
+
+				if (button.value.indexOf(' Dollars') >= 0) {
+					buttonbutton = Number(button.value.replace(' Dollars', ''));
+				} else if (button.value.indexOf(' Dollar') >= 0) {
+					buttonbutton = Number(button.value.replace(' Dollar', ''));
+				}
+
+				if (remaining < Number(button.value.replace(' Dollars', ''))) {
+					button.setAttribute('disabled', true);
+				}
 			}
 
 			document.getElementById('message').innerText = totalCount;
