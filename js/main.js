@@ -10,6 +10,8 @@ function mainJs() {
 
 	var allButtons = document.getElementById('dollars').querySelectorAll('input');
 
+	amountUsedReachThatAmount(random, allButtons);
+
 	for (var i = 0; i < allButtons.length; i++) {
 		var button = allButtons[i];
 
@@ -43,16 +45,14 @@ function mainJs() {
 			// Check if buttons need to be disabled
 			var remaining = random - totalCount;
 
-			console.log(remaining);
-
 			for (var i = 0; i < allButtons.length; i++) {
 				var button = allButtons[i];
 				var buttonValue = 0;
 
 				if (button.value.indexOf(' Dollars') >= 0) {
-					buttonbutton = Number(button.value.replace(' Dollars', ''));
+					buttonValue = Number(button.value.replace(' Dollars', ''));
 				} else if (button.value.indexOf(' Dollar') >= 0) {
-					buttonbutton = Number(button.value.replace(' Dollar', ''));
+					buttonValue = Number(button.value.replace(' Dollar', ''));
 				}
 
 				if (remaining < Number(button.value.replace(' Dollars', ''))) {
@@ -60,8 +60,37 @@ function mainJs() {
 				}
 			}
 
+			// Specify the amount used to reach that amount.
+			amountUsedReachThatAmount(remaining, allButtons);
+
 			document.getElementById('message').innerText = totalCount;
 		});
+	}
+}
+
+// Specify the amount used to reach that amount.
+function amountUsedReachThatAmount(remaining, allButtons) {
+	var tempValue = remaining;
+
+	for (var i = allButtons.length - 1; i >= 0; i--) {
+		if (tempValue > 0) {
+			var buttonValue = 0;
+			var button = allButtons[i];
+
+			if (button.value.indexOf(' Dollars') >= 0) {
+				buttonValue = Number(button.value.replace(' Dollars', ''));
+			} else if (button.value.indexOf(' Dollar') >= 0) {
+				buttonValue = Number(button.value.replace(' Dollar', ''));
+			}
+
+			var timesAmount = Math.floor(tempValue / buttonValue);
+
+			tempValue = tempValue - (timesAmount * buttonValue);
+
+			if (timesAmount > 0) {
+				document.getElementById('message').innerText += 'You can have billetes of ' + timesAmount + ' of ' + button.value + '.\n';
+			}
+		}
 	}
 }
 
